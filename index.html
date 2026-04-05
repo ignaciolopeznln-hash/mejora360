@@ -3,129 +3,90 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Oportunidades de Mejora</title>
+<title>Mejora360 — OCG Chile</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#F4F7FA;--surface:#ffffff;--border:#E2E8F0;--border2:#CBD5E1;
+  --bg:#F4F7FA;--surface:#fff;--border:#E2E8F0;--border2:#CBD5E1;
   --text:#0F1923;--text2:#4A5568;--text3:#94A3B8;
   --accent:#00C2A0;--accent2:#00A688;--accent3:#E6FAF7;
-  --danger:#EF4444;--warning:#F59E0B;--info:#3B82F6;
-  --purple:#8B5CF6;--coral:#FF6B35;
-  --sidebar:220px;--radius:12px;--radius-sm:8px;
+  --danger:#EF4444;--warning:#F59E0B;--info:#3B82F6;--purple:#8B5CF6;
+  --sidebar:224px;--radius:12px;--radius-sm:8px;
 }
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* ─── LOGIN ─── */
-#login-screen{
-  display:flex;align-items:center;justify-content:center;
-  min-height:100vh;background:linear-gradient(135deg,#0F1923 0%,#1A2B3C 50%,#0F3D35 100%);
-  padding:1rem;
-}
-.login-card{
-  background:#fff;border-radius:20px;padding:2.5rem 2rem;
-  width:100%;max-width:400px;box-shadow:0 25px 60px rgba(0,0,0,.25);
-}
-.login-brand{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#0F1923;margin-bottom:4px;}
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0F1923 0%,#1A2B3C 50%,#0F3D35 100%);padding:1rem;}
+.login-card{background:#fff;border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:400px;box-shadow:0 25px 60px rgba(0,0,0,.25);}
+.login-brand{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#0F1923;margin-bottom:2px;}
 .login-brand span{color:#00C2A0;}
-.login-sub{font-size:13px;color:#94A3B8;margin-bottom:2rem;}
-.login-divider{display:flex;align-items:center;gap:12px;margin:1.2rem 0;}
-.login-divider hr{flex:1;border:none;border-top:1px solid #E2E8F0;}
-.login-divider span{font-size:12px;color:#94A3B8;}
-.form-label{display:block;font-size:12px;font-weight:600;color:#4A5568;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
-.form-input{
-  width:100%;border:1.5px solid #E2E8F0;border-radius:10px;
-  padding:11px 14px;font-size:14px;font-family:inherit;color:#0F1923;
-  outline:none;transition:border .2s;background:#fff;
-}
-.form-input:focus{border-color:#00C2A0;box-shadow:0 0 0 3px rgba(0,194,160,.1);}
-.form-group{margin-bottom:16px;}
-.btn{
-  width:100%;padding:12px;border-radius:10px;border:none;
-  font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;
-}
-.btn-primary{background:#00C2A0;color:#fff;}
-.btn-primary:hover{background:#00A688;transform:translateY(-1px);}
-.ms-btn{
-  width:100%;padding:11px 14px;border-radius:10px;
-  border:1.5px solid #E2E8F0;background:#fff;font-size:14px;
-  font-family:inherit;cursor:pointer;display:flex;align-items:center;
-  justify-content:center;gap:10px;color:#0F1923;font-weight:500;transition:all .2s;
-}
-.ms-btn:hover{background:#F4F7FA;border-color:#CBD5E1;}
+.login-company{font-size:12px;font-weight:600;color:#94A3B8;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem;}
+.login-desc{font-size:13px;color:#64748B;margin-bottom:1.5rem;line-height:1.6;}
+.ms-btn{width:100%;padding:13px 16px;border-radius:10px;border:1.5px solid #E2E8F0;background:#fff;font-size:15px;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;color:#0F1923;font-weight:500;transition:all .2s;}
+.ms-btn:hover{background:#F4F7FA;border-color:#CBD5E1;transform:translateY(-1px);}
 .ms-icon{width:20px;height:20px;display:grid;grid-template-columns:1fr 1fr;gap:2px;}
 .ms-icon span{border-radius:2px;}
+.login-note{font-size:12px;color:#94A3B8;text-align:center;margin-top:1rem;}
 .login-error{background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px;display:none;}
+.login-loading{text-align:center;padding:1rem;color:#64748B;font-size:14px;display:none;}
 
-/* ─── APP SHELL ─── */
+/* LAYOUT */
 #app{display:none;min-height:100vh;}
 .layout{display:flex;min-height:100vh;}
 
-/* ─── SIDEBAR ─── */
-.sidebar{
-  width:var(--sidebar);background:#0F1923;flex-shrink:0;
-  display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;
-  z-index:100;transition:transform .3s;
-}
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);background:#0F1923;flex-shrink:0;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s;}
 .sidebar-brand{padding:1.5rem 1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);}
-.sidebar-brand-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#fff;line-height:1.2;}
+.sidebar-brand-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;}
 .sidebar-brand-name span{color:#00C2A0;}
-.sidebar-brand-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;}
+.sidebar-brand-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:3px;}
 .sidebar-nav{flex:1;padding:1rem 0;overflow-y:auto;}
 .nav-section{padding:0 1rem;margin-bottom:1.5rem;}
-.nav-section-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem;padding:0 .5rem;}
-.nav-item{
-  display:flex;align-items:center;gap:10px;padding:9px 12px;
-  border-radius:8px;cursor:pointer;color:rgba(255,255,255,.6);
-  font-size:13.5px;font-weight:500;transition:all .2s;margin-bottom:2px;
-}
+.nav-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem;padding:0 .5rem;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.55);font-size:13.5px;font-weight:500;transition:all .2s;margin-bottom:2px;}
 .nav-item:hover{background:rgba(255,255,255,.07);color:#fff;}
 .nav-item.active{background:rgba(0,194,160,.15);color:#00C2A0;}
-.nav-icon{width:18px;height:18px;flex-shrink:0;}
-.sidebar-user{
-  padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,.08);
-  display:flex;align-items:center;gap:10px;
-}
-.user-avatar{
-  width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#00C2A0,#00A688);
-  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
-}
-.user-name{font-size:13px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.user-role{font-size:11px;color:rgba(255,255,255,.4);}
-.logout-btn{margin-left:auto;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);padding:4px;border-radius:6px;transition:color .2s;flex-shrink:0;}
+.nav-icon{width:17px;height:17px;flex-shrink:0;}
+.sidebar-user{padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#00C2A0,#00A688);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.user-name{font-size:13px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;}
+.user-role{font-size:11px;color:rgba(255,255,255,.35);}
+.logout-btn{margin-left:auto;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.35);padding:4px;border-radius:6px;transition:color .2s;flex-shrink:0;}
 .logout-btn:hover{color:#fff;}
 
-/* ─── TOPBAR MOBILE ─── */
-.topbar{
-  display:none;position:fixed;top:0;left:0;right:0;height:56px;
-  background:#0F1923;z-index:99;align-items:center;padding:0 1rem;gap:12px;
-}
+/* TOPBAR MOBILE */
+.topbar{display:none;position:fixed;top:0;left:0;right:0;height:56px;background:#0F1923;z-index:99;align-items:center;padding:0 1rem;gap:12px;}
 .burger{background:none;border:none;cursor:pointer;color:#fff;padding:4px;}
 .topbar-brand{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;}
 .topbar-brand span{color:#00C2A0;}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;}
 
-/* ─── MAIN ─── */
+/* MAIN */
 .main{margin-left:var(--sidebar);flex:1;padding:2rem;min-height:100vh;}
 .page{display:none;}
 .page.active{display:block;}
-.page-header{margin-bottom:2rem;}
+.page-header{margin-bottom:2rem;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
 .page-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--text);}
 .page-sub{font-size:14px;color:var(--text2);margin-top:4px;}
 
-/* ─── CARDS ─── */
-.card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.5rem;}
-.card-title{font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;}
+/* SYNC STATUS */
+.sync-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;}
+.sync-ok{background:#D1FAE5;color:#065F46;}
+.sync-loading{background:#DBEAFE;color:#1E40AF;}
+.sync-error{background:#FEE2E2;color:#991B1B;}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
 
-/* ─── STAT CARDS ─── */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem;}
-.stat-card{
-  background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);
-  padding:1.25rem;position:relative;overflow:hidden;
-}
+/* CARDS */
+.card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.5rem;}
+.card-title{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:.04em;}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.stat-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.25rem;position:relative;overflow:hidden;}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
 .stat-card.c-total::before{background:#00C2A0;}
 .stat-card.c-pending::before{background:#F59E0B;}
@@ -133,121 +94,69 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .stat-card.c-closed::before{background:#8B5CF6;}
 .stat-label{font-size:12px;color:var(--text3);font-weight:500;margin-bottom:.5rem;}
 .stat-value{font-size:28px;font-weight:700;color:var(--text);}
-.stat-icon{position:absolute;right:1rem;top:50%;transform:translateY(-50%);font-size:28px;opacity:.1;}
 
-/* ─── CHARTS ─── */
+/* CHARTS */
 .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
-.chart-wrap{position:relative;width:100%;}
 
-/* ─── FORM ─── */
+/* FORM */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
 .form-grid .full{grid-column:1/-1;}
-.form-select,.form-textarea{
-  width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);
-  padding:10px 14px;font-size:14px;font-family:inherit;color:var(--text);
-  outline:none;transition:border .2s;background:#fff;
-}
-.form-select:focus,.form-textarea:focus,.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,194,160,.1);}
+.form-group{margin-bottom:0;}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
+.form-input,.form-select,.form-textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border .2s;background:#fff;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,194,160,.1);}
 .form-textarea{resize:vertical;min-height:90px;}
 .form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;}
-.form-btn{
-  padding:11px 24px;border-radius:var(--radius-sm);border:none;
-  font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;
-}
+.form-btn{padding:11px 24px;border-radius:var(--radius-sm);border:none;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;}
 .form-btn-primary{background:var(--accent);color:#fff;}
 .form-btn-primary:hover{background:var(--accent2);}
+.form-btn-primary:disabled{background:#94A3B8;cursor:not-allowed;}
 .form-btn-secondary{background:var(--bg);color:var(--text2);border:1px solid var(--border);}
 .form-btn-secondary:hover{background:var(--border);}
 .form-actions{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.5rem;}
-.form-success{
-  background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;
-  border-radius:var(--radius-sm);padding:12px 16px;font-size:14px;
-  margin-bottom:1rem;display:none;align-items:center;gap:8px;
-}
+.form-success{background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:var(--radius-sm);padding:12px 16px;font-size:14px;margin-bottom:1rem;display:none;align-items:center;gap:8px;}
+.form-err{background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;border-radius:var(--radius-sm);padding:12px 16px;font-size:14px;margin-bottom:1rem;display:none;align-items:center;gap:8px;}
 
-/* ─── TABLE ─── */
+/* TABLE */
 .table-controls{display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;}
-.search-box{
-  flex:1;min-width:180px;border:1.5px solid var(--border);border-radius:var(--radius-sm);
-  padding:9px 14px;font-size:14px;font-family:inherit;outline:none;background:#fff;
-}
+.search-box{flex:1;min-width:180px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 14px;font-size:14px;font-family:inherit;outline:none;background:#fff;}
 .search-box:focus{border-color:var(--accent);}
-.filter-select{
-  border:1.5px solid var(--border);border-radius:var(--radius-sm);
-  padding:9px 14px;font-size:14px;font-family:inherit;outline:none;background:#fff;color:var(--text);
-}
-.export-btn{
-  padding:9px 18px;border-radius:var(--radius-sm);border:1.5px solid var(--border);
-  background:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;
-  color:var(--text2);transition:all .2s;display:flex;align-items:center;gap:6px;
-}
-.export-btn:hover{background:var(--bg);border-color:var(--border2);}
+.filter-select{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 14px;font-size:14px;font-family:inherit;outline:none;background:#fff;color:var(--text);}
+.export-btn{padding:9px 18px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;color:var(--text2);transition:all .2s;display:flex;align-items:center;gap:6px;}
+.export-btn:hover{background:var(--bg);}
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:13.5px;}
-th{
-  text-align:left;padding:10px 14px;font-size:11px;font-weight:600;
-  color:var(--text3);text-transform:uppercase;letter-spacing:.05em;
-  border-bottom:1px solid var(--border);white-space:nowrap;
-}
+th{text-align:left;padding:10px 14px;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border);white-space:nowrap;}
 td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:#F8FAFC;}
-.badge{
-  display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;
-  font-size:11.5px;font-weight:600;white-space:nowrap;
-}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600;white-space:nowrap;}
 .badge-pending{background:#FEF3C7;color:#92400E;}
 .badge-progress{background:#DBEAFE;color:#1E40AF;}
 .badge-closed{background:#D1FAE5;color:#065F46;}
 .badge-high{background:#FEE2E2;color:#991B1B;}
 .badge-medium{background:#FEF3C7;color:#92400E;}
 .badge-low{background:#F0FDF4;color:#166534;}
-.badge-cat{background:#EDE9FE;color:#5B21B6;}
+.badge-cat{background:#EDE9FE;color:#5B21B6;font-size:11px;}
 .empty-state{text-align:center;padding:3rem;color:var(--text3);}
-.empty-icon{font-size:40px;margin-bottom:.75rem;}
-.empty-text{font-size:15px;font-weight:500;}
-.empty-sub{font-size:13px;margin-top:4px;}
 
-/* ─── DETAIL MODAL ─── */
-.modal-backdrop{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);
-  z-index:200;align-items:center;justify-content:center;padding:1rem;
-}
+/* MODAL */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center;padding:1rem;}
 .modal-backdrop.open{display:flex;}
-.modal{
-  background:#fff;border-radius:16px;width:100%;max-width:540px;
-  max-height:90vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,.2);
-}
-.modal-header{
-  padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.modal-title{font-size:16px;font-weight:700;color:var(--text);}
-.modal-close{background:none;border:none;cursor:pointer;color:var(--text3);font-size:20px;padding:4px;border-radius:6px;transition:color .2s;}
-.modal-close:hover{color:var(--text);}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;}
+.modal-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-size:16px;font-weight:700;}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--text3);font-size:22px;line-height:1;}
 .modal-body{padding:1.5rem;}
 .modal-field{margin-bottom:1rem;}
 .modal-field-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
-.modal-field-value{font-size:14px;color:var(--text);}
+.modal-field-value{font-size:14px;color:var(--text);line-height:1.5;}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
 
-/* ─── RESPONSIVE ─── */
-@media(max-width:900px){
-  .charts-grid{grid-template-columns:1fr;}
-  .form-grid{grid-template-columns:1fr;}
-  .form-grid .full{grid-column:1;}
-}
-@media(max-width:700px){
-  .sidebar{transform:translateX(-100%);}
-  .sidebar.open{transform:translateX(0);}
-  .sidebar-overlay.open{display:block;}
-  .topbar{display:flex;}
-  .main{margin-left:0;padding:5rem 1rem 1.5rem;}
-  .stats-grid{grid-template-columns:1fr 1fr;}
-  .stat-value{font-size:22px;}
-}
-@media(max-width:400px){
-  .stats-grid{grid-template-columns:1fr;}
-}
+/* RESPONSIVE */
+@media(max-width:900px){.charts-grid{grid-template-columns:1fr;}.form-grid{grid-template-columns:1fr;}.form-grid .full{grid-column:1;}}
+@media(max-width:700px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.topbar{display:flex}.main{margin-left:0;padding:5rem 1rem 1.5rem}.stats-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:400px){.stats-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -256,44 +165,33 @@ tr:hover td{background:#F8FAFC;}
 <div id="login-screen">
   <div class="login-card">
     <div class="login-brand">Mejora<span>360</span></div>
-    <div class="login-sub">Gestión de Oportunidades de Mejora</div>
-    <button class="ms-btn" onclick="loginWithMS()">
+    <div class="login-company">OCG Chile</div>
+    <div class="login-desc">Gestión de Oportunidades de Mejora. Inicia sesión con tu cuenta corporativa de Microsoft para acceder y conectarte a la lista de SharePoint.</div>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-loading" id="login-loading">⏳ Conectando con Microsoft...</div>
+    <button class="ms-btn" id="ms-login-btn" onclick="loginMicrosoft()">
       <div class="ms-icon">
-        <span style="background:#F25022;"></span>
-        <span style="background:#7FBA00;"></span>
-        <span style="background:#00A4EF;"></span>
-        <span style="background:#FFB900;"></span>
+        <span style="background:#F25022"></span><span style="background:#7FBA00"></span>
+        <span style="background:#00A4EF"></span><span style="background:#FFB900"></span>
       </div>
-      Continuar con Microsoft
+      Iniciar sesión con Microsoft
     </button>
-    <div class="login-divider"><hr/><span>o</span><hr/></div>
-    <div class="login-error" id="login-error">Correo no autorizado. Verifica con el administrador.</div>
-    <div class="form-group">
-      <label class="form-label">Correo corporativo</label>
-      <input class="form-input" type="email" id="login-email" placeholder="tu@empresa.com" onkeydown="if(event.key==='Enter')doLogin()"/>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Contraseña</label>
-      <input class="form-input" type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
-    </div>
-    <button class="btn btn-primary" onclick="doLogin()">Ingresar</button>
+    <div class="login-note">Solo usuarios de OCG Chile con acceso autorizado</div>
   </div>
 </div>
 
 <!-- APP -->
 <div id="app">
   <div class="layout">
-
-    <!-- SIDEBAR -->
     <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
         <div class="sidebar-brand-name">Mejora<span>360</span></div>
-        <div class="sidebar-brand-sub">Gestión de oportunidades</div>
+        <div class="sidebar-brand-sub">OCG Chile — Gestión de mejoras</div>
       </div>
       <nav class="sidebar-nav">
         <div class="nav-section">
-          <div class="nav-section-label">Principal</div>
+          <div class="nav-label">Principal</div>
           <div class="nav-item active" onclick="showPage('dashboard',this)">
             <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
             Dashboard
@@ -310,17 +208,16 @@ tr:hover td{background:#F8FAFC;}
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar" id="user-avatar">U</div>
-        <div>
-          <div class="user-name" id="user-name">Usuario</div>
-          <div class="user-role">Equipo de mejora</div>
+        <div style="overflow:hidden">
+          <div class="user-name" id="user-name">Cargando...</div>
+          <div class="user-role">OCG Chile</div>
         </div>
         <button class="logout-btn" onclick="doLogout()" title="Cerrar sesión">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
         </button>
       </div>
     </aside>
 
-    <!-- TOPBAR MOBILE -->
     <div class="topbar">
       <button class="burger" onclick="openSidebar()">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -328,74 +225,40 @@ tr:hover td{background:#F8FAFC;}
       <div class="topbar-brand">Mejora<span>360</span></div>
     </div>
 
-    <!-- MAIN -->
     <main class="main">
 
       <!-- DASHBOARD -->
       <div class="page active" id="page-dashboard">
         <div class="page-header">
-          <div class="page-title">Dashboard</div>
-          <div class="page-sub">Resumen general de oportunidades de mejora</div>
+          <div>
+            <div class="page-title">Dashboard</div>
+            <div class="page-sub">Resumen de oportunidades de mejora — OCG Chile</div>
+          </div>
+          <div id="sync-status" class="sync-badge sync-loading"><div class="sync-dot"></div>Sincronizando...</div>
         </div>
         <div class="stats-grid">
-          <div class="stat-card c-total">
-            <div class="stat-label">Total registradas</div>
-            <div class="stat-value" id="stat-total">0</div>
-            <div class="stat-icon">📋</div>
-          </div>
-          <div class="stat-card c-pending">
-            <div class="stat-label">Pendientes</div>
-            <div class="stat-value" id="stat-pending">0</div>
-            <div class="stat-icon">⏳</div>
-          </div>
-          <div class="stat-card c-progress">
-            <div class="stat-label">En proceso</div>
-            <div class="stat-value" id="stat-progress">0</div>
-            <div class="stat-icon">🔄</div>
-          </div>
-          <div class="stat-card c-closed">
-            <div class="stat-label">Cerradas</div>
-            <div class="stat-value" id="stat-closed">0</div>
-            <div class="stat-icon">✅</div>
-          </div>
+          <div class="stat-card c-total"><div class="stat-label">Total registradas</div><div class="stat-value" id="stat-total">—</div></div>
+          <div class="stat-card c-pending"><div class="stat-label">Pendientes</div><div class="stat-value" id="stat-pending">—</div></div>
+          <div class="stat-card c-progress"><div class="stat-label">En proceso</div><div class="stat-value" id="stat-progress">—</div></div>
+          <div class="stat-card c-closed"><div class="stat-label">Cerradas</div><div class="stat-value" id="stat-closed">—</div></div>
         </div>
         <div class="charts-grid">
-          <div class="card">
-            <div class="card-title">Por categoría</div>
-            <div class="chart-wrap" style="height:240px"><canvas id="chartCat"></canvas></div>
-          </div>
-          <div class="card">
-            <div class="card-title">Por estado</div>
-            <div class="chart-wrap" style="height:240px"><canvas id="chartStatus"></canvas></div>
-          </div>
+          <div class="card"><div class="card-title">Por categoría</div><div style="position:relative;height:240px"><canvas id="chartCat"></canvas></div></div>
+          <div class="card"><div class="card-title">Por estado</div><div style="position:relative;height:240px"><canvas id="chartStatus"></canvas></div></div>
         </div>
-        <div class="card">
-          <div class="card-title">Por prioridad</div>
-          <div class="chart-wrap" style="height:200px"><canvas id="chartPriority"></canvas></div>
-        </div>
+        <div class="card"><div class="card-title">Por prioridad</div><div style="position:relative;height:180px"><canvas id="chartPriority"></canvas></div></div>
       </div>
 
       <!-- NUEVO REGISTRO -->
       <div class="page" id="page-registro">
-        <div class="page-header">
-          <div class="page-title">Nueva oportunidad</div>
-          <div class="page-sub">Registra una nueva oportunidad de mejora</div>
-        </div>
+        <div class="page-header"><div><div class="page-title">Nueva oportunidad</div><div class="page-sub">Registra una nueva oportunidad de mejora en SharePoint</div></div></div>
         <div class="card">
-          <div class="form-success" id="form-success">
-            <span>✓</span> Oportunidad registrada exitosamente.
-          </div>
+          <div class="form-success" id="form-success"><span>✓</span> Oportunidad registrada exitosamente en SharePoint.</div>
+          <div class="form-err" id="form-err"><span>✗</span> <span id="form-err-msg">Error al guardar.</span></div>
           <div class="form-grid">
-            <div class="full form-group">
-              <label class="form-label">Título de la oportunidad *</label>
-              <input class="form-input" id="f-titulo" placeholder="Ej: Mejorar proceso de aprobación de compras"/>
-            </div>
-            <div class="full form-group">
-              <label class="form-label">Descripción *</label>
-              <textarea class="form-textarea" id="f-desc" placeholder="Describe el problema o la mejora propuesta..."></textarea>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Categoría *</label>
+            <div class="full form-group"><label class="form-label">Título de la oportunidad *</label><input class="form-input" id="f-titulo" placeholder="Ej: Mejorar proceso de aprobación de compras"/></div>
+            <div class="full form-group"><label class="form-label">Descripción *</label><textarea class="form-textarea" id="f-desc" placeholder="Describe el problema o la mejora propuesta..."></textarea></div>
+            <div class="form-group"><label class="form-label">Categoría *</label>
               <select class="form-select" id="f-cat">
                 <option value="">Selecciona...</option>
                 <option>Procesos internos</option>
@@ -404,47 +267,26 @@ tr:hover td{background:#F8FAFC;}
                 <option>Seguridad y medio ambiente</option>
               </select>
             </div>
-            <div class="form-group">
-              <label class="form-label">Área responsable *</label>
-              <input class="form-input" id="f-area" placeholder="Ej: Operaciones"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Responsable *</label>
-              <input class="form-input" id="f-resp" placeholder="Nombre o correo del responsable"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Prioridad *</label>
+            <div class="form-group"><label class="form-label">Área responsable *</label><input class="form-input" id="f-area" placeholder="Ej: Operaciones"/></div>
+            <div class="form-group"><label class="form-label">Responsable *</label><input class="form-input" id="f-resp" placeholder="Nombre del responsable"/></div>
+            <div class="form-group"><label class="form-label">Prioridad *</label>
               <select class="form-select" id="f-prior">
                 <option value="">Selecciona...</option>
-                <option>Alta</option>
-                <option>Media</option>
-                <option>Baja</option>
+                <option>Alta</option><option>Media</option><option>Baja</option>
               </select>
             </div>
-            <div class="form-group">
-              <label class="form-label">Estado</label>
+            <div class="form-group"><label class="form-label">Estado</label>
               <select class="form-select" id="f-estado">
-                <option>Pendiente</option>
-                <option>En proceso</option>
-                <option>Cerrada</option>
+                <option>Pendiente</option><option>En proceso</option><option>Cerrada</option>
               </select>
             </div>
-            <div class="form-group">
-              <label class="form-label">Fecha de detección</label>
-              <input class="form-input" type="date" id="f-fdet"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Fecha límite</label>
-              <input class="form-input" type="date" id="f-flim"/>
-            </div>
-            <div class="full form-group">
-              <label class="form-label">Evidencia o comentarios</label>
-              <textarea class="form-textarea" id="f-coment" placeholder="Notas adicionales, links, observaciones..."></textarea>
-            </div>
+            <div class="form-group"><label class="form-label">Fecha de detección</label><input class="form-input" type="date" id="f-fdet"/></div>
+            <div class="form-group"><label class="form-label">Fecha límite</label><input class="form-input" type="date" id="f-flim"/></div>
+            <div class="full form-group"><label class="form-label">Evidencia o comentarios</label><textarea class="form-textarea" id="f-coment" placeholder="Notas adicionales, observaciones..."></textarea></div>
           </div>
           <div class="form-actions">
             <button class="form-btn form-btn-secondary" onclick="clearForm()">Limpiar</button>
-            <button class="form-btn form-btn-primary" onclick="submitForm()">Registrar oportunidad</button>
+            <button class="form-btn form-btn-primary" id="submit-btn" onclick="submitForm()">Registrar en SharePoint</button>
           </div>
         </div>
       </div>
@@ -452,57 +294,41 @@ tr:hover td{background:#F8FAFC;}
       <!-- REGISTROS -->
       <div class="page" id="page-registros">
         <div class="page-header">
-          <div class="page-title">Todos los registros</div>
-          <div class="page-sub">Consulta, filtra y exporta las oportunidades registradas</div>
+          <div><div class="page-title">Todos los registros</div><div class="page-sub">Datos en tiempo real desde SharePoint — OCG Chile</div></div>
+          <button class="export-btn" onclick="exportExcel()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
+            Exportar Excel
+          </button>
         </div>
         <div class="card">
           <div class="table-controls">
             <input class="search-box" type="text" id="search-input" placeholder="Buscar por título, área, responsable..." oninput="renderTable()"/>
             <select class="filter-select" id="filter-cat" onchange="renderTable()">
               <option value="">Todas las categorías</option>
-              <option>Procesos internos</option>
-              <option>Calidad de productos/servicios</option>
-              <option>Tecnología y sistemas</option>
-              <option>Seguridad y medio ambiente</option>
+              <option>Procesos internos</option><option>Calidad de productos/servicios</option>
+              <option>Tecnología y sistemas</option><option>Seguridad y medio ambiente</option>
             </select>
             <select class="filter-select" id="filter-estado" onchange="renderTable()">
               <option value="">Todos los estados</option>
-              <option>Pendiente</option>
-              <option>En proceso</option>
-              <option>Cerrada</option>
+              <option>Pendiente</option><option>En proceso</option><option>Cerrada</option>
             </select>
             <select class="filter-select" id="filter-prior" onchange="renderTable()">
               <option value="">Todas las prioridades</option>
-              <option>Alta</option>
-              <option>Media</option>
-              <option>Baja</option>
+              <option>Alta</option><option>Media</option><option>Baja</option>
             </select>
-            <button class="export-btn" onclick="exportExcel()">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
-              Exportar Excel
-            </button>
           </div>
           <div class="table-wrap">
             <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Título</th>
-                  <th>Categoría</th>
-                  <th>Área</th>
-                  <th>Responsable</th>
-                  <th>Prioridad</th>
-                  <th>Estado</th>
-                  <th>F. Detección</th>
-                  <th></th>
-                </tr>
-              </thead>
+              <thead><tr>
+                <th>#</th><th>Título</th><th>Categoría</th><th>Área</th>
+                <th>Responsable</th><th>Prioridad</th><th>Estado</th><th>F. Detección</th><th></th>
+              </tr></thead>
               <tbody id="table-body"></tbody>
             </table>
             <div class="empty-state" id="empty-state" style="display:none">
-              <div class="empty-icon">📭</div>
-              <div class="empty-text">Sin registros aún</div>
-              <div class="empty-sub">Agrega tu primera oportunidad de mejora</div>
+              <div style="font-size:36px;margin-bottom:.75rem">📭</div>
+              <div style="font-size:15px;font-weight:500">Sin registros</div>
+              <div style="font-size:13px;margin-top:4px;color:var(--text3)">Agrega tu primera oportunidad de mejora</div>
             </div>
           </div>
         </div>
@@ -512,8 +338,8 @@ tr:hover td{background:#F8FAFC;}
   </div>
 </div>
 
-<!-- MODAL DETALLE -->
-<div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
+<!-- MODAL -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title" id="modal-title">Detalle</div>
@@ -524,257 +350,378 @@ tr:hover td{background:#F8FAFC;}
 </div>
 
 <script>
-// ─── DATA ───
-let records = JSON.parse(localStorage.getItem('mejora360') || '[]');
+// ══════════════════════════════════════════
+// CONFIGURACIÓN — reemplaza con tus valores
+// ══════════════════════════════════════════
+const CONFIG = {
+  clientId: 'bea9f8e3-c428-4fbe-bc29-564e2e69e6ef',
+  tenantId: '7aec079a-ab5e-4aef-aba1-1e88fadc1786',
+  siteHostname: 'ocgchile-my.sharepoint.com',
+  sitePath: '/personal/ignacio_lopez_ocgchile_com',
+  listName: 'Oportunidades de Mejora'
+};
+
+// ══════════════════════════════════════════
+// MSAL — Autenticación Microsoft
+// ══════════════════════════════════════════
+const msalConfig = {
+  auth: {
+    clientId: CONFIG.clientId,
+    authority: `https://login.microsoftonline.com/${CONFIG.tenantId}`,
+    redirectUri: window.location.href.split('?')[0]
+  },
+  cache: { cacheLocation: 'sessionStorage' }
+};
+const msalInstance = new msal.PublicClientApplication(msalConfig);
+const scopes = ['User.Read', 'Sites.ReadWrite.All'];
+
+let accessToken = null;
+let siteId = null;
+let listId = null;
+let records = [];
 let charts = {};
-let currentUser = '';
 
-const ALLOWED = ['admin@empresa.com','mejora@empresa.com','calidad@empresa.com','test@test.com'];
-
-function saveData(){ localStorage.setItem('mejora360', JSON.stringify(records)); }
-
-// ─── LOGIN ───
-function doLogin(){
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-pass').value;
+// ══════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════
+async function loginMicrosoft() {
+  const btn = document.getElementById('ms-login-btn');
+  const loading = document.getElementById('login-loading');
   const err = document.getElementById('login-error');
-  if(!email || !pass){ err.style.display='flex'; err.textContent='Completa todos los campos.'; return; }
-  // Simulación: cualquier email con contraseña "mejora2024" o en lista permitida
-  if(pass === 'mejora2024' || ALLOWED.includes(email.toLowerCase())){
-    err.style.display='none';
-    currentUser = email;
-    startApp();
-  } else {
-    err.style.display='flex';
-    err.textContent='Correo o contraseña incorrectos. (Usa: mejora2024)';
+  btn.style.display = 'none';
+  loading.style.display = 'block';
+  err.style.display = 'none';
+  try {
+    const result = await msalInstance.loginPopup({ scopes, prompt: 'select_account' });
+    accessToken = result.accessToken;
+    const name = result.account.name || result.account.username;
+    const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    document.getElementById('user-avatar').textContent = initials;
+    document.getElementById('user-name').textContent = name;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('f-fdet').value = new Date().toISOString().split('T')[0];
+    await initSharePoint();
+  } catch(e) {
+    btn.style.display = 'flex';
+    loading.style.display = 'none';
+    err.style.display = 'block';
+    err.textContent = 'Error al iniciar sesión: ' + (e.message || 'intenta de nuevo');
   }
 }
-function loginWithMS(){
-  // Simulación login Microsoft
-  currentUser = 'usuario@empresa.com';
-  startApp();
-}
-function startApp(){
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('app').style.display='block';
-  const initials = currentUser.split('@')[0].slice(0,2).toUpperCase();
-  document.getElementById('user-avatar').textContent = initials;
-  document.getElementById('user-name').textContent = currentUser;
-  // Set today as default detection date
-  document.getElementById('f-fdet').value = new Date().toISOString().split('T')[0];
-  updateDashboard();
-  renderTable();
-}
-function doLogout(){
-  document.getElementById('app').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('login-email').value='';
-  document.getElementById('login-pass').value='';
-  currentUser='';
+
+async function getToken() {
+  const account = msalInstance.getAllAccounts()[0];
+  if (!account) return null;
+  try {
+    const r = await msalInstance.acquireTokenSilent({ scopes, account });
+    return r.accessToken;
+  } catch {
+    const r = await msalInstance.acquireTokenPopup({ scopes });
+    return r.accessToken;
+  }
 }
 
-// ─── NAVIGATION ───
-function showPage(id, el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  if(el) el.classList.add('active');
-  closeSidebar();
-  if(id==='dashboard') updateDashboard();
-  if(id==='registros') renderTable();
+function doLogout() {
+  msalInstance.logoutPopup();
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('ms-login-btn').style.display = 'flex';
+  document.getElementById('login-loading').style.display = 'none';
 }
-function openSidebar(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
-function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
 
-// ─── FORM ───
-function submitForm(){
+// ══════════════════════════════════════════
+// SHAREPOINT — Graph API
+// ══════════════════════════════════════════
+async function graphFetch(url, options = {}) {
+  const token = await getToken();
+  const res = await fetch(`https://graph.microsoft.com/v1.0${url}`, {
+    ...options,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      ...(options.headers || {})
+    }
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error?.message || `HTTP ${res.status}`);
+  }
+  return res.status === 204 ? null : res.json();
+}
+
+async function initSharePoint() {
+  setSyncStatus('loading', 'Conectando a SharePoint...');
+  try {
+    // Obtener Site ID
+    const siteData = await graphFetch(`/sites/${CONFIG.siteHostname}:${CONFIG.sitePath}`);
+    siteId = siteData.id;
+
+    // Obtener List ID
+    const listsData = await graphFetch(`/sites/${siteId}/lists?$filter=displayName eq '${CONFIG.listName}'`);
+    if (listsData.value.length === 0) throw new Error(`Lista "${CONFIG.listName}" no encontrada`);
+    listId = listsData.value[0].id;
+
+    await loadRecords();
+    setSyncStatus('ok', 'Conectado a SharePoint');
+  } catch(e) {
+    setSyncStatus('error', 'Error de conexión');
+    console.error('SharePoint error:', e);
+    showToast('Error conectando a SharePoint: ' + e.message, true);
+  }
+}
+
+async function loadRecords() {
+  setSyncStatus('loading', 'Cargando datos...');
+  try {
+    const data = await graphFetch(
+      `/sites/${siteId}/lists/${listId}/items?expand=fields&$top=500&$orderby=createdDateTime desc`
+    );
+    records = data.value.map(item => ({
+      id: item.id,
+      titulo: item.fields['Title'] || '',
+      desc: item.fields['Descripci_x00f3_n'] || '',
+      cat: item.fields['Categor_x00ed_a'] || '',
+      area: item.fields['_x00c1_rearesponsable'] || '',
+      resp: item.fields['Responsable'] || '',
+      prior: item.fields['Prioridad'] || '',
+      estado: item.fields['Estado'] || '',
+      fdet: item.fields['Fechadedetecci_x00f3_n'] || '',
+      flim: item.fields['Fechal_x00ed_mite'] || '',
+      coment: item.fields['Evidenciaocomentarios'] || '',
+      fechaRegistro: item.createdDateTime ? new Date(item.createdDateTime).toLocaleDateString('es-CL') : ''
+    }));
+    setSyncStatus('ok', `${records.length} registros sincronizados`);
+    updateDashboard();
+    renderTable();
+  } catch(e) {
+    setSyncStatus('error', 'Error al cargar');
+    showToast('Error cargando registros: ' + e.message, true);
+  }
+}
+
+async function submitForm() {
   const titulo = document.getElementById('f-titulo').value.trim();
   const desc = document.getElementById('f-desc').value.trim();
   const cat = document.getElementById('f-cat').value;
   const area = document.getElementById('f-area').value.trim();
   const resp = document.getElementById('f-resp').value.trim();
   const prior = document.getElementById('f-prior').value;
-  if(!titulo||!desc||!cat||!area||!resp||!prior){
-    alert('Completa todos los campos obligatorios (*)'); return;
+  const succ = document.getElementById('form-success');
+  const errEl = document.getElementById('form-err');
+  const errMsg = document.getElementById('form-err-msg');
+  const btn = document.getElementById('submit-btn');
+  succ.style.display = 'none';
+  errEl.style.display = 'none';
+
+  if (!titulo||!desc||!cat||!area||!resp||!prior) {
+    errEl.style.display = 'flex';
+    errMsg.textContent = 'Completa todos los campos obligatorios (*)';
+    return;
   }
-  const rec = {
-    id: Date.now(),
-    titulo, desc, cat, area, resp, prior,
-    estado: document.getElementById('f-estado').value,
-    fdet: document.getElementById('f-fdet').value,
-    flim: document.getElementById('f-flim').value,
-    coment: document.getElementById('f-coment').value.trim(),
-    registradoPor: currentUser,
-    fechaRegistro: new Date().toLocaleDateString('es-CL')
+  if (!siteId || !listId) {
+    errEl.style.display = 'flex';
+    errMsg.textContent = 'No hay conexión con SharePoint. Recarga la página.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Guardando...';
+
+  const fields = {
+    'Title': titulo,
+    'Descripci_x00f3_n': desc,
+    'Categor_x00ed_a': cat,
+    '_x00c1_rearesponsable': area,
+    'Responsable': resp,
+    'Prioridad': prior,
+    'Estado': document.getElementById('f-estado').value,
+    'Fechadedetecci_x00f3_n': document.getElementById('f-fdet').value || null,
+    'Fechal_x00ed_mite': document.getElementById('f-flim').value || null,
+    'Evidenciaocomentarios': document.getElementById('f-coment').value.trim()
   };
-  records.unshift(rec);
-  saveData();
-  const s = document.getElementById('form-success');
-  s.style.display='flex';
-  setTimeout(()=>{ s.style.display='none'; },3500);
-  clearForm();
-  document.getElementById('f-fdet').value = new Date().toISOString().split('T')[0];
+
+  try {
+    await graphFetch(`/sites/${siteId}/lists/${listId}/items`, {
+      method: 'POST',
+      body: JSON.stringify({ fields })
+    });
+    succ.style.display = 'flex';
+    clearForm();
+    await loadRecords();
+    setTimeout(() => { succ.style.display = 'none'; }, 4000);
+  } catch(e) {
+    errEl.style.display = 'flex';
+    errMsg.textContent = 'Error al guardar: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Registrar en SharePoint';
+  }
 }
-function clearForm(){
-  ['f-titulo','f-desc','f-area','f-resp','f-coment','f-flim'].forEach(id=>document.getElementById(id).value='');
-  ['f-cat','f-prior'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-estado').value='Pendiente';
+
+// ══════════════════════════════════════════
+// UI
+// ══════════════════════════════════════════
+function setSyncStatus(type, text) {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  el.className = `sync-badge sync-${type}`;
+  el.innerHTML = `<div class="sync-dot"></div>${text}`;
+}
+
+function showToast(msg, isError) {
+  console[isError ? 'error' : 'log'](msg);
+}
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  closeSidebar();
+  if (id === 'dashboard') updateDashboard();
+  if (id === 'registros') renderTable();
+}
+
+function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+
+function clearForm() {
+  ['f-titulo','f-desc','f-area','f-resp','f-coment','f-flim'].forEach(id => document.getElementById(id).value = '');
+  ['f-cat','f-prior'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-estado').value = 'Pendiente';
   document.getElementById('f-fdet').value = new Date().toISOString().split('T')[0];
 }
 
-// ─── TABLE ───
-function renderTable(){
+function statusBadge(s) {
+  if (s === 'Pendiente') return `<span class="badge badge-pending">Pendiente</span>`;
+  if (s === 'En proceso') return `<span class="badge badge-progress">En proceso</span>`;
+  return `<span class="badge badge-closed">Cerrada</span>`;
+}
+function priorityBadge(p) {
+  if (p === 'Alta') return `<span class="badge badge-high">Alta</span>`;
+  if (p === 'Media') return `<span class="badge badge-medium">Media</span>`;
+  return `<span class="badge badge-low">Baja</span>`;
+}
+
+function renderTable() {
   const search = document.getElementById('search-input').value.toLowerCase();
   const fcat = document.getElementById('filter-cat').value;
   const fest = document.getElementById('filter-estado').value;
   const fprior = document.getElementById('filter-prior').value;
-  let filtered = records.filter(r=>{
-    const matchS = !search || r.titulo.toLowerCase().includes(search) || r.area.toLowerCase().includes(search) || r.resp.toLowerCase().includes(search);
-    const matchC = !fcat || r.cat===fcat;
-    const matchE = !fest || r.estado===fest;
-    const matchP = !fprior || r.prior===fprior;
-    return matchS&&matchC&&matchE&&matchP;
+  const filtered = records.filter(r => {
+    const s = !search || (r.titulo+r.area+r.resp).toLowerCase().includes(search);
+    return s && (!fcat||r.cat===fcat) && (!fest||r.estado===fest) && (!fprior||r.prior===fprior);
   });
   const tbody = document.getElementById('table-body');
   const empty = document.getElementById('empty-state');
-  if(filtered.length===0){ tbody.innerHTML=''; empty.style.display='block'; return; }
-  empty.style.display='none';
-  tbody.innerHTML = filtered.map((r,i)=>`
+  if (!filtered.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = filtered.map((r,i) => `
     <tr>
-      <td style="color:var(--text3);font-size:12px;">${i+1}</td>
-      <td style="max-width:200px;font-weight:500;">${r.titulo}</td>
+      <td style="color:var(--text3);font-size:12px">${i+1}</td>
+      <td style="max-width:200px;font-weight:500">${r.titulo}</td>
       <td><span class="badge badge-cat">${r.cat}</span></td>
       <td>${r.area}</td>
       <td>${r.resp}</td>
       <td>${priorityBadge(r.prior)}</td>
       <td>${statusBadge(r.estado)}</td>
-      <td style="color:var(--text3);font-size:12px;">${r.fdet||'—'}</td>
-      <td><button onclick="showDetail(${r.id})" style="background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text2);">Ver</button></td>
-    </tr>
-  `).join('');
-}
-function statusBadge(s){
-  if(s==='Pendiente') return `<span class="badge badge-pending">Pendiente</span>`;
-  if(s==='En proceso') return `<span class="badge badge-progress">En proceso</span>`;
-  return `<span class="badge badge-closed">Cerrada</span>`;
-}
-function priorityBadge(p){
-  if(p==='Alta') return `<span class="badge badge-high">Alta</span>`;
-  if(p==='Media') return `<span class="badge badge-medium">Media</span>`;
-  return `<span class="badge badge-low">Baja</span>`;
+      <td style="color:var(--text3);font-size:12px">${r.fdet||'—'}</td>
+      <td><button onclick="showDetail('${r.id}')" style="background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text2)">Ver</button></td>
+    </tr>`).join('');
 }
 
-// ─── DETAIL MODAL ───
-function showDetail(id){
-  const r = records.find(x=>x.id===id);
-  if(!r) return;
+function showDetail(id) {
+  const r = records.find(x => x.id == id);
+  if (!r) return;
   document.getElementById('modal-title').textContent = r.titulo;
   document.getElementById('modal-body').innerHTML = `
-    <div class="modal-field"><div class="modal-field-label">Descripción</div><div class="modal-field-value">${r.desc}</div></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-      <div class="modal-field"><div class="modal-field-label">Categoría</div><div class="modal-field-value">${r.cat}</div></div>
-      <div class="modal-field"><div class="modal-field-label">Área responsable</div><div class="modal-field-value">${r.area}</div></div>
-      <div class="modal-field"><div class="modal-field-label">Responsable</div><div class="modal-field-value">${r.resp}</div></div>
+    <div class="modal-field"><div class="modal-field-label">Descripción</div><div class="modal-field-value">${r.desc||'—'}</div></div>
+    <div class="modal-grid">
+      <div class="modal-field"><div class="modal-field-label">Categoría</div><div class="modal-field-value">${r.cat||'—'}</div></div>
+      <div class="modal-field"><div class="modal-field-label">Área responsable</div><div class="modal-field-value">${r.area||'—'}</div></div>
+      <div class="modal-field"><div class="modal-field-label">Responsable</div><div class="modal-field-value">${r.resp||'—'}</div></div>
       <div class="modal-field"><div class="modal-field-label">Prioridad</div><div class="modal-field-value">${priorityBadge(r.prior)}</div></div>
       <div class="modal-field"><div class="modal-field-label">Estado</div><div class="modal-field-value">${statusBadge(r.estado)}</div></div>
       <div class="modal-field"><div class="modal-field-label">Fecha detección</div><div class="modal-field-value">${r.fdet||'—'}</div></div>
       <div class="modal-field"><div class="modal-field-label">Fecha límite</div><div class="modal-field-value">${r.flim||'—'}</div></div>
-      <div class="modal-field"><div class="modal-field-label">Registrado por</div><div class="modal-field-value">${r.registradoPor}</div></div>
+      <div class="modal-field"><div class="modal-field-label">Fecha registro</div><div class="modal-field-value">${r.fechaRegistro||'—'}</div></div>
     </div>
-    ${r.coment?`<div class="modal-field"><div class="modal-field-label">Comentarios</div><div class="modal-field-value">${r.coment}</div></div>`:''}
-  `;
+    ${r.coment ? `<div class="modal-field"><div class="modal-field-label">Comentarios</div><div class="modal-field-value">${r.coment}</div></div>` : ''}`;
   document.getElementById('modal-backdrop').classList.add('open');
 }
-function closeModal(e){ if(e.target===document.getElementById('modal-backdrop')) document.getElementById('modal-backdrop').classList.remove('open'); }
 
-// ─── DASHBOARD ───
-function updateDashboard(){
-  const total = records.length;
+function updateDashboard() {
+  document.getElementById('stat-total').textContent = records.length;
+  document.getElementById('stat-pending').textContent = records.filter(r=>r.estado==='Pendiente').length;
+  document.getElementById('stat-progress').textContent = records.filter(r=>r.estado==='En proceso').length;
+  document.getElementById('stat-closed').textContent = records.filter(r=>r.estado==='Cerrada').length;
+  buildCharts();
+}
+
+function buildCharts() {
+  const cats = ['Procesos internos','Calidad de productos/servicios','Tecnología y sistemas','Seguridad y medio ambiente'];
+  const catCounts = cats.map(c => records.filter(r=>r.cat===c).length);
   const pending = records.filter(r=>r.estado==='Pendiente').length;
   const progress = records.filter(r=>r.estado==='En proceso').length;
   const closed = records.filter(r=>r.estado==='Cerrada').length;
-  document.getElementById('stat-total').textContent = total;
-  document.getElementById('stat-pending').textContent = pending;
-  document.getElementById('stat-progress').textContent = progress;
-  document.getElementById('stat-closed').textContent = closed;
-  buildCharts(pending, progress, closed);
-}
-
-function buildCharts(pending, progress, closed){
-  const cats = ['Procesos internos','Calidad de productos/servicios','Tecnología y sistemas','Seguridad y medio ambiente'];
-  const catCounts = cats.map(c=>records.filter(r=>r.cat===c).length);
-
-  if(charts.cat){ charts.cat.destroy(); }
-  if(charts.status){ charts.status.destroy(); }
-  if(charts.priority){ charts.priority.destroy(); }
-
-  charts.cat = new Chart(document.getElementById('chartCat'),{
-    type:'bar',
-    data:{
-      labels:['Procesos','Calidad','Tecnología','Seguridad'],
-      datasets:[{data:catCounts,backgroundColor:['#00C2A0','#3B82F6','#8B5CF6','#FF6B35'],borderRadius:6,borderSkipped:false}]
-    },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#F1F5F9'}}}}
-  });
-
-  charts.status = new Chart(document.getElementById('chartStatus'),{
-    type:'doughnut',
-    data:{
-      labels:['Pendiente','En proceso','Cerrada'],
-      datasets:[{data:[pending,progress,closed],backgroundColor:['#F59E0B','#3B82F6','#00C2A0'],borderWidth:0,hoverOffset:6}]
-    },
-    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{font:{size:12},padding:12,usePointStyle:true,pointStyle:'circle'}}}}
-  });
-
   const alta = records.filter(r=>r.prior==='Alta').length;
   const media = records.filter(r=>r.prior==='Media').length;
   const baja = records.filter(r=>r.prior==='Baja').length;
-  charts.priority = new Chart(document.getElementById('chartPriority'),{
+
+  if (charts.cat) charts.cat.destroy();
+  if (charts.status) charts.status.destroy();
+  if (charts.priority) charts.priority.destroy();
+
+  charts.cat = new Chart(document.getElementById('chartCat'), {
     type:'bar',
-    data:{
-      labels:['Alta','Media','Baja'],
-      datasets:[{data:[alta,media,baja],backgroundColor:['#EF4444','#F59E0B','#22C55E'],borderRadius:6,borderSkipped:false}]
-    },
+    data:{labels:['Procesos','Calidad','Tecnología','Seguridad'],datasets:[{data:catCounts,backgroundColor:['#00C2A0','#3B82F6','#8B5CF6','#FF6B35'],borderRadius:6,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#F1F5F9'}}}}
+  });
+  charts.status = new Chart(document.getElementById('chartStatus'), {
+    type:'doughnut',
+    data:{labels:['Pendiente','En proceso','Cerrada'],datasets:[{data:[pending,progress,closed],backgroundColor:['#F59E0B','#3B82F6','#00C2A0'],borderWidth:0,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{font:{size:12},padding:12,usePointStyle:true,pointStyle:'circle'}}}}
+  });
+  charts.priority = new Chart(document.getElementById('chartPriority'), {
+    type:'bar',
+    data:{labels:['Alta','Media','Baja'],datasets:[{data:[alta,media,baja],backgroundColor:['#EF4444','#F59E0B','#22C55E'],borderRadius:6,borderSkipped:false}]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#F1F5F9'}},y:{grid:{display:false}}}}
   });
 }
 
-// ─── EXPORT ───
-function exportExcel(){
-  if(records.length===0){ alert('No hay registros para exportar.'); return; }
-  const data = records.map(r=>({
-    'Título': r.titulo,
-    'Descripción': r.desc,
-    'Categoría': r.cat,
-    'Área responsable': r.area,
-    'Responsable': r.resp,
-    'Prioridad': r.prior,
-    'Estado': r.estado,
-    'Fecha detección': r.fdet,
-    'Fecha límite': r.flim,
-    'Comentarios': r.coment,
-    'Registrado por': r.registradoPor,
-    'Fecha de registro': r.fechaRegistro
+function exportExcel() {
+  if (!records.length) { alert('No hay registros para exportar.'); return; }
+  const data = records.map(r => ({
+    'Título': r.titulo, 'Descripción': r.desc, 'Categoría': r.cat,
+    'Área responsable': r.area, 'Responsable': r.resp, 'Prioridad': r.prior,
+    'Estado': r.estado, 'Fecha detección': r.fdet, 'Fecha límite': r.flim,
+    'Comentarios': r.coment, 'Fecha de registro': r.fechaRegistro
   }));
   const ws = XLSX.utils.json_to_sheet(data);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Oportunidades');
-  XLSX.writeFile(wb, 'oportunidades_mejora.xlsx');
+  XLSX.writeFile(wb, 'oportunidades_mejora_OCGChile.xlsx');
 }
 
-// ─── INIT ───
-window.onload = function(){
-  // Cargar datos de demo si está vacío
-  if(records.length===0){
-    records = [
-      {id:1,titulo:'Mejorar proceso de aprobación de compras',desc:'El proceso actual tarda más de 5 días hábiles.',cat:'Procesos internos',area:'Finanzas',resp:'Ana Torres',prior:'Alta',estado:'En proceso',fdet:'2026-03-01',flim:'2026-04-15',coment:'',registradoPor:'admin@empresa.com',fechaRegistro:'01/03/2026'},
-      {id:2,titulo:'Actualizar software de gestión',desc:'El sistema tiene 3 años sin actualizarse.',cat:'Tecnología y sistemas',area:'TI',resp:'Luis Mora',prior:'Media',estado:'Pendiente',fdet:'2026-03-10',flim:'2026-05-01',coment:'Revisar presupuesto.',registradoPor:'admin@empresa.com',fechaRegistro:'10/03/2026'},
-      {id:3,titulo:'Capacitación en seguridad industrial',desc:'Índice de incidentes subió 12% este trimestre.',cat:'Seguridad y medio ambiente',area:'Operaciones',resp:'Carlos Vega',prior:'Alta',estado:'Pendiente',fdet:'2026-03-15',flim:'2026-04-30',coment:'',registradoPor:'mejora@empresa.com',fechaRegistro:'15/03/2026'},
-      {id:4,titulo:'Estandarizar formatos de informe',desc:'Cada área usa formatos distintos generando confusión.',cat:'Calidad de productos/servicios',area:'Calidad',resp:'María Silva',prior:'Baja',estado:'Cerrada',fdet:'2026-02-01',flim:'2026-03-01',coment:'Completado. Se distribuyó plantilla estándar.',registradoPor:'calidad@empresa.com',fechaRegistro:'01/02/2026'},
-      {id:5,titulo:'Optimizar tiempo de respuesta a clientes',desc:'Tiempo promedio actual es 48h, meta es 24h.',cat:'Calidad de productos/servicios',area:'Atención al cliente',resp:'Pedro Ruiz',prior:'Alta',estado:'En proceso',fdet:'2026-03-20',flim:'2026-04-20',coment:'Implementando CRM.',registradoPor:'admin@empresa.com',fechaRegistro:'20/03/2026'},
-    ];
-    saveData();
-  }
+// Manejar redirect de MSAL al cargar
+window.onload = async () => {
+  try {
+    await msalInstance.handleRedirectPromise();
+    const accounts = msalInstance.getAllAccounts();
+    if (accounts.length > 0) {
+      const name = accounts[0].name || accounts[0].username;
+      const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      document.getElementById('user-avatar').textContent = initials;
+      document.getElementById('user-name').textContent = name;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      document.getElementById('f-fdet').value = new Date().toISOString().split('T')[0];
+      const r = await msalInstance.acquireTokenSilent({ scopes, account: accounts[0] });
+      accessToken = r.accessToken;
+      await initSharePoint();
+    }
+  } catch(e) { console.log('No hay sesión activa'); }
 };
 </script>
 </body>
