@@ -6,7 +6,6 @@
 <title>Mejora360 — OCG Chile</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -18,27 +17,7 @@
   --sidebar:224px;--radius:12px;--radius-sm:8px;
 }
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-
-/* LOGIN */
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0F1923 0%,#1A2B3C 50%,#0F3D35 100%);padding:1rem;}
-.login-card{background:#fff;border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:400px;box-shadow:0 25px 60px rgba(0,0,0,.25);}
-.login-brand{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#0F1923;margin-bottom:2px;}
-.login-brand span{color:#00C2A0;}
-.login-company{font-size:12px;font-weight:600;color:#94A3B8;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem;}
-.login-desc{font-size:13px;color:#64748B;margin-bottom:1.5rem;line-height:1.6;}
-.ms-btn{width:100%;padding:13px 16px;border-radius:10px;border:1.5px solid #E2E8F0;background:#fff;font-size:15px;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;color:#0F1923;font-weight:500;transition:all .2s;}
-.ms-btn:hover{background:#F4F7FA;border-color:#CBD5E1;transform:translateY(-1px);}
-.ms-icon{width:20px;height:20px;display:grid;grid-template-columns:1fr 1fr;gap:2px;}
-.ms-icon span{border-radius:2px;}
-.login-note{font-size:12px;color:#94A3B8;text-align:center;margin-top:1rem;}
-.login-error{background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px;display:none;}
-.login-loading{text-align:center;padding:1rem;color:#64748B;font-size:14px;display:none;}
-
-/* LAYOUT */
-#app{display:none;min-height:100vh;}
 .layout{display:flex;min-height:100vh;}
-
-/* SIDEBAR */
 .sidebar{width:var(--sidebar);background:#0F1923;flex-shrink:0;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s;}
 .sidebar-brand{padding:1.5rem 1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);}
 .sidebar-brand-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;}
@@ -55,36 +34,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .user-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#00C2A0,#00A688);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
 .user-name{font-size:13px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;}
 .user-role{font-size:11px;color:rgba(255,255,255,.35);}
-.logout-btn{margin-left:auto;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.35);padding:4px;border-radius:6px;transition:color .2s;flex-shrink:0;}
-.logout-btn:hover{color:#fff;}
-
-/* TOPBAR MOBILE */
 .topbar{display:none;position:fixed;top:0;left:0;right:0;height:56px;background:#0F1923;z-index:99;align-items:center;padding:0 1rem;gap:12px;}
 .burger{background:none;border:none;cursor:pointer;color:#fff;padding:4px;}
 .topbar-brand{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;}
 .topbar-brand span{color:#00C2A0;}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;}
-
-/* MAIN */
 .main{margin-left:var(--sidebar);flex:1;padding:2rem;min-height:100vh;}
 .page{display:none;}
 .page.active{display:block;}
 .page-header{margin-bottom:2rem;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
 .page-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--text);}
 .page-sub{font-size:14px;color:var(--text2);margin-top:4px;}
-
-/* SYNC STATUS */
 .sync-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;}
 .sync-ok{background:#D1FAE5;color:#065F46;}
 .sync-loading{background:#DBEAFE;color:#1E40AF;}
 .sync-error{background:#FEE2E2;color:#991B1B;}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
-
-/* CARDS */
 .card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.5rem;}
 .card-title{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:.04em;}
-
-/* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem;}
 .stat-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.25rem;position:relative;overflow:hidden;}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
@@ -94,11 +61,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .stat-card.c-closed::before{background:#8B5CF6;}
 .stat-label{font-size:12px;color:var(--text3);font-weight:500;margin-bottom:.5rem;}
 .stat-value{font-size:28px;font-weight:700;color:var(--text);}
-
-/* CHARTS */
 .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
-
-/* FORM */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
 .form-grid .full{grid-column:1/-1;}
 .form-group{margin-bottom:0;}
@@ -116,14 +79,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .form-actions{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.5rem;}
 .form-success{background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:var(--radius-sm);padding:12px 16px;font-size:14px;margin-bottom:1rem;display:none;align-items:center;gap:8px;}
 .form-err{background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;border-radius:var(--radius-sm);padding:12px 16px;font-size:14px;margin-bottom:1rem;display:none;align-items:center;gap:8px;}
-
-/* TABLE */
 .table-controls{display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;}
 .search-box{flex:1;min-width:180px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 14px;font-size:14px;font-family:inherit;outline:none;background:#fff;}
 .search-box:focus{border-color:var(--accent);}
 .filter-select{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 14px;font-size:14px;font-family:inherit;outline:none;background:#fff;color:var(--text);}
 .export-btn{padding:9px 18px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;color:var(--text2);transition:all .2s;display:flex;align-items:center;gap:6px;}
 .export-btn:hover{background:var(--bg);}
+.refresh-btn{padding:9px 18px;border-radius:var(--radius-sm);border:1.5px solid var(--accent);background:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;color:var(--accent);transition:all .2s;display:flex;align-items:center;gap:6px;}
+.refresh-btn:hover{background:var(--accent3);}
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:13.5px;}
 th{text-align:left;padding:10px 14px;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border);white-space:nowrap;}
@@ -139,8 +102,6 @@ tr:hover td{background:#F8FAFC;}
 .badge-low{background:#F0FDF4;color:#166534;}
 .badge-cat{background:#EDE9FE;color:#5B21B6;font-size:11px;}
 .empty-state{text-align:center;padding:3rem;color:var(--text3);}
-
-/* MODAL */
 .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center;padding:1rem;}
 .modal-backdrop.open{display:flex;}
 .modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;}
@@ -152,8 +113,6 @@ tr:hover td{background:#F8FAFC;}
 .modal-field-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
 .modal-field-value{font-size:14px;color:var(--text);line-height:1.5;}
 .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-
-/* RESPONSIVE */
 @media(max-width:900px){.charts-grid{grid-template-columns:1fr;}.form-grid{grid-template-columns:1fr;}.form-grid .full{grid-column:1;}}
 @media(max-width:700px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.topbar{display:flex}.main{margin-left:0;padding:5rem 1rem 1.5rem}.stats-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:400px){.stats-grid{grid-template-columns:1fr}}
@@ -161,181 +120,162 @@ tr:hover td{background:#F8FAFC;}
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-brand">Mejora<span>360</span></div>
-    <div class="login-company">OCG Chile</div>
-    <div class="login-desc">Gestión de Oportunidades de Mejora. Inicia sesión con tu cuenta corporativa de Microsoft para acceder y conectarte a la lista de SharePoint.</div>
-    <div class="login-error" id="login-error"></div>
-    <div class="login-loading" id="login-loading">⏳ Conectando con Microsoft...</div>
-    <button class="ms-btn" id="ms-login-btn" onclick="loginMicrosoft()">
-      <div class="ms-icon">
-        <span style="background:#F25022"></span><span style="background:#7FBA00"></span>
-        <span style="background:#00A4EF"></span><span style="background:#FFB900"></span>
+<div class="layout">
+  <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-name">Mejora<span>360</span></div>
+      <div class="sidebar-brand-sub">OCG Chile — Gestión de mejoras</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Principal</div>
+        <div class="nav-item active" onclick="showPage('dashboard',this)">
+          <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item" onclick="showPage('registro',this)">
+          <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Nueva oportunidad
+        </div>
+        <div class="nav-item" onclick="showPage('registros',this)">
+          <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Todos los registros
+        </div>
       </div>
-      Iniciar sesión con Microsoft
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-avatar">OC</div>
+      <div style="overflow:hidden">
+        <div class="user-name">OCG Chile</div>
+        <div class="user-role">Gestión de mejoras</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="topbar">
+    <button class="burger" onclick="openSidebar()">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="login-note">Solo usuarios de OCG Chile con acceso autorizado</div>
+    <div class="topbar-brand">Mejora<span>360</span></div>
   </div>
-</div>
 
-<!-- APP -->
-<div id="app">
-  <div class="layout">
-    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-brand">
-        <div class="sidebar-brand-name">Mejora<span>360</span></div>
-        <div class="sidebar-brand-sub">OCG Chile — Gestión de mejoras</div>
-      </div>
-      <nav class="sidebar-nav">
-        <div class="nav-section">
-          <div class="nav-label">Principal</div>
-          <div class="nav-item active" onclick="showPage('dashboard',this)">
-            <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-            Dashboard
-          </div>
-          <div class="nav-item" onclick="showPage('registro',this)">
-            <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-            Nueva oportunidad
-          </div>
-          <div class="nav-item" onclick="showPage('registros',this)">
-            <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-            Todos los registros
-          </div>
-        </div>
-      </nav>
-      <div class="sidebar-user">
-        <div class="user-avatar" id="user-avatar">U</div>
-        <div style="overflow:hidden">
-          <div class="user-name" id="user-name">Cargando...</div>
-          <div class="user-role">OCG Chile</div>
-        </div>
-        <button class="logout-btn" onclick="doLogout()" title="Cerrar sesión">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-        </button>
-      </div>
-    </aside>
+  <main class="main">
 
-    <div class="topbar">
-      <button class="burger" onclick="openSidebar()">
-        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
-      <div class="topbar-brand">Mejora<span>360</span></div>
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-sub">Resumen de oportunidades de mejora — OCG Chile</div>
+        </div>
+        <div id="sync-status" class="sync-badge sync-loading"><div class="sync-dot"></div>Cargando...</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card c-total"><div class="stat-label">Total registradas</div><div class="stat-value" id="stat-total">—</div></div>
+        <div class="stat-card c-pending"><div class="stat-label">Pendientes</div><div class="stat-value" id="stat-pending">—</div></div>
+        <div class="stat-card c-progress"><div class="stat-label">En proceso</div><div class="stat-value" id="stat-progress">—</div></div>
+        <div class="stat-card c-closed"><div class="stat-label">Cerradas</div><div class="stat-value" id="stat-closed">—</div></div>
+      </div>
+      <div class="charts-grid">
+        <div class="card"><div class="card-title">Por categoría</div><div style="position:relative;height:240px"><canvas id="chartCat"></canvas></div></div>
+        <div class="card"><div class="card-title">Por estado</div><div style="position:relative;height:240px"><canvas id="chartStatus"></canvas></div></div>
+      </div>
+      <div class="card"><div class="card-title">Por prioridad</div><div style="position:relative;height:180px"><canvas id="chartPriority"></canvas></div></div>
     </div>
 
-    <main class="main">
-
-      <!-- DASHBOARD -->
-      <div class="page active" id="page-dashboard">
-        <div class="page-header">
-          <div>
-            <div class="page-title">Dashboard</div>
-            <div class="page-sub">Resumen de oportunidades de mejora — OCG Chile</div>
+    <!-- NUEVO REGISTRO -->
+    <div class="page" id="page-registro">
+      <div class="page-header"><div><div class="page-title">Nueva oportunidad</div><div class="page-sub">Registra una nueva oportunidad de mejora en Google Sheets</div></div></div>
+      <div class="card">
+        <div class="form-success" id="form-success"><span>✓</span> Oportunidad registrada exitosamente en Google Sheets.</div>
+        <div class="form-err" id="form-err"><span>✗</span> <span id="form-err-msg">Error al guardar.</span></div>
+        <div class="form-grid">
+          <div class="full form-group"><label class="form-label">Título de la oportunidad *</label><input class="form-input" id="f-titulo" placeholder="Ej: Mejorar proceso de aprobación de compras"/></div>
+          <div class="full form-group"><label class="form-label">Descripción *</label><textarea class="form-textarea" id="f-desc" placeholder="Describe el problema o la mejora propuesta..."></textarea></div>
+          <div class="form-group"><label class="form-label">Categoría *</label>
+            <select class="form-select" id="f-cat">
+              <option value="">Selecciona...</option>
+              <option>Procesos internos</option>
+              <option>Calidad de productos/servicios</option>
+              <option>Tecnología y sistemas</option>
+              <option>Seguridad y medio ambiente</option>
+            </select>
           </div>
-          <div id="sync-status" class="sync-badge sync-loading"><div class="sync-dot"></div>Sincronizando...</div>
-        </div>
-        <div class="stats-grid">
-          <div class="stat-card c-total"><div class="stat-label">Total registradas</div><div class="stat-value" id="stat-total">—</div></div>
-          <div class="stat-card c-pending"><div class="stat-label">Pendientes</div><div class="stat-value" id="stat-pending">—</div></div>
-          <div class="stat-card c-progress"><div class="stat-label">En proceso</div><div class="stat-value" id="stat-progress">—</div></div>
-          <div class="stat-card c-closed"><div class="stat-label">Cerradas</div><div class="stat-value" id="stat-closed">—</div></div>
-        </div>
-        <div class="charts-grid">
-          <div class="card"><div class="card-title">Por categoría</div><div style="position:relative;height:240px"><canvas id="chartCat"></canvas></div></div>
-          <div class="card"><div class="card-title">Por estado</div><div style="position:relative;height:240px"><canvas id="chartStatus"></canvas></div></div>
-        </div>
-        <div class="card"><div class="card-title">Por prioridad</div><div style="position:relative;height:180px"><canvas id="chartPriority"></canvas></div></div>
-      </div>
-
-      <!-- NUEVO REGISTRO -->
-      <div class="page" id="page-registro">
-        <div class="page-header"><div><div class="page-title">Nueva oportunidad</div><div class="page-sub">Registra una nueva oportunidad de mejora en SharePoint</div></div></div>
-        <div class="card">
-          <div class="form-success" id="form-success"><span>✓</span> Oportunidad registrada exitosamente en SharePoint.</div>
-          <div class="form-err" id="form-err"><span>✗</span> <span id="form-err-msg">Error al guardar.</span></div>
-          <div class="form-grid">
-            <div class="full form-group"><label class="form-label">Título de la oportunidad *</label><input class="form-input" id="f-titulo" placeholder="Ej: Mejorar proceso de aprobación de compras"/></div>
-            <div class="full form-group"><label class="form-label">Descripción *</label><textarea class="form-textarea" id="f-desc" placeholder="Describe el problema o la mejora propuesta..."></textarea></div>
-            <div class="form-group"><label class="form-label">Categoría *</label>
-              <select class="form-select" id="f-cat">
-                <option value="">Selecciona...</option>
-                <option>Procesos internos</option>
-                <option>Calidad de productos/servicios</option>
-                <option>Tecnología y sistemas</option>
-                <option>Seguridad y medio ambiente</option>
-              </select>
-            </div>
-            <div class="form-group"><label class="form-label">Área responsable *</label><input class="form-input" id="f-area" placeholder="Ej: Operaciones"/></div>
-            <div class="form-group"><label class="form-label">Responsable *</label><input class="form-input" id="f-resp" placeholder="Nombre del responsable"/></div>
-            <div class="form-group"><label class="form-label">Prioridad *</label>
-              <select class="form-select" id="f-prior">
-                <option value="">Selecciona...</option>
-                <option>Alta</option><option>Media</option><option>Baja</option>
-              </select>
-            </div>
-            <div class="form-group"><label class="form-label">Estado</label>
-              <select class="form-select" id="f-estado">
-                <option>Pendiente</option><option>En proceso</option><option>Cerrada</option>
-              </select>
-            </div>
-            <div class="form-group"><label class="form-label">Fecha de detección</label><input class="form-input" type="date" id="f-fdet"/></div>
-            <div class="form-group"><label class="form-label">Fecha límite</label><input class="form-input" type="date" id="f-flim"/></div>
-            <div class="full form-group"><label class="form-label">Evidencia o comentarios</label><textarea class="form-textarea" id="f-coment" placeholder="Notas adicionales, observaciones..."></textarea></div>
+          <div class="form-group"><label class="form-label">Área responsable *</label><input class="form-input" id="f-area" placeholder="Ej: Operaciones"/></div>
+          <div class="form-group"><label class="form-label">Responsable *</label><input class="form-input" id="f-resp" placeholder="Nombre del responsable"/></div>
+          <div class="form-group"><label class="form-label">Prioridad *</label>
+            <select class="form-select" id="f-prior">
+              <option value="">Selecciona...</option>
+              <option>Alta</option><option>Media</option><option>Baja</option>
+            </select>
           </div>
-          <div class="form-actions">
-            <button class="form-btn form-btn-secondary" onclick="clearForm()">Limpiar</button>
-            <button class="form-btn form-btn-primary" id="submit-btn" onclick="submitForm()">Registrar en SharePoint</button>
+          <div class="form-group"><label class="form-label">Estado</label>
+            <select class="form-select" id="f-estado">
+              <option>Pendiente</option><option>En proceso</option><option>Cerrada</option>
+            </select>
           </div>
+          <div class="form-group"><label class="form-label">Fecha de detección</label><input class="form-input" type="date" id="f-fdet"/></div>
+          <div class="form-group"><label class="form-label">Fecha límite</label><input class="form-input" type="date" id="f-flim"/></div>
+          <div class="full form-group"><label class="form-label">Evidencia o comentarios</label><textarea class="form-textarea" id="f-coment" placeholder="Notas adicionales, observaciones..."></textarea></div>
+        </div>
+        <div class="form-actions">
+          <button class="form-btn form-btn-secondary" onclick="clearForm()">Limpiar</button>
+          <button class="form-btn form-btn-primary" id="submit-btn" onclick="submitForm()">Registrar en Google Sheets</button>
         </div>
       </div>
+    </div>
 
-      <!-- REGISTROS -->
-      <div class="page" id="page-registros">
-        <div class="page-header">
-          <div><div class="page-title">Todos los registros</div><div class="page-sub">Datos en tiempo real desde SharePoint — OCG Chile</div></div>
+    <!-- REGISTROS -->
+    <div class="page" id="page-registros">
+      <div class="page-header">
+        <div><div class="page-title">Todos los registros</div><div class="page-sub">Datos desde Google Sheets — OCG Chile</div></div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+          <button class="refresh-btn" onclick="loadRecords()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Actualizar
+          </button>
           <button class="export-btn" onclick="exportExcel()">
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
             Exportar Excel
           </button>
         </div>
-        <div class="card">
-          <div class="table-controls">
-            <input class="search-box" type="text" id="search-input" placeholder="Buscar por título, área, responsable..." oninput="renderTable()"/>
-            <select class="filter-select" id="filter-cat" onchange="renderTable()">
-              <option value="">Todas las categorías</option>
-              <option>Procesos internos</option><option>Calidad de productos/servicios</option>
-              <option>Tecnología y sistemas</option><option>Seguridad y medio ambiente</option>
-            </select>
-            <select class="filter-select" id="filter-estado" onchange="renderTable()">
-              <option value="">Todos los estados</option>
-              <option>Pendiente</option><option>En proceso</option><option>Cerrada</option>
-            </select>
-            <select class="filter-select" id="filter-prior" onchange="renderTable()">
-              <option value="">Todas las prioridades</option>
-              <option>Alta</option><option>Media</option><option>Baja</option>
-            </select>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr>
-                <th>#</th><th>Título</th><th>Categoría</th><th>Área</th>
-                <th>Responsable</th><th>Prioridad</th><th>Estado</th><th>F. Detección</th><th></th>
-              </tr></thead>
-              <tbody id="table-body"></tbody>
-            </table>
-            <div class="empty-state" id="empty-state" style="display:none">
-              <div style="font-size:36px;margin-bottom:.75rem">📭</div>
-              <div style="font-size:15px;font-weight:500">Sin registros</div>
-              <div style="font-size:13px;margin-top:4px;color:var(--text3)">Agrega tu primera oportunidad de mejora</div>
-            </div>
+      </div>
+      <div class="card">
+        <div class="table-controls">
+          <input class="search-box" type="text" id="search-input" placeholder="Buscar por título, área, responsable..." oninput="renderTable()"/>
+          <select class="filter-select" id="filter-cat" onchange="renderTable()">
+            <option value="">Todas las categorías</option>
+            <option>Procesos internos</option><option>Calidad de productos/servicios</option>
+            <option>Tecnología y sistemas</option><option>Seguridad y medio ambiente</option>
+          </select>
+          <select class="filter-select" id="filter-estado" onchange="renderTable()">
+            <option value="">Todos los estados</option>
+            <option>Pendiente</option><option>En proceso</option><option>Cerrada</option>
+          </select>
+          <select class="filter-select" id="filter-prior" onchange="renderTable()">
+            <option value="">Todas las prioridades</option>
+            <option>Alta</option><option>Media</option><option>Baja</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>#</th><th>Título</th><th>Categoría</th><th>Área</th>
+              <th>Responsable</th><th>Prioridad</th><th>Estado</th><th>F. Detección</th><th></th>
+            </tr></thead>
+            <tbody id="table-body"></tbody>
+          </table>
+          <div class="empty-state" id="empty-state" style="display:none">
+            <div style="font-size:36px;margin-bottom:.75rem">📭</div>
+            <div style="font-size:15px;font-weight:500">Sin registros</div>
+            <div style="font-size:13px;margin-top:4px;color:var(--text3)">Agrega tu primera oportunidad de mejora</div>
           </div>
         </div>
       </div>
+    </div>
 
-    </main>
-  </div>
+  </main>
 </div>
 
 <!-- MODAL -->
@@ -350,227 +290,95 @@ tr:hover td{background:#F8FAFC;}
 </div>
 
 <script>
-// ══════════════════════════════════════════
-// CONFIGURACIÓN — reemplaza con tus valores
-// ══════════════════════════════════════════
-const CONFIG = {
-  clientId: 'bea9f8e3-c428-4fbe-bc29-564e2e69e6ef',
-  tenantId: '7aec079a-ab5e-4aef-aba1-1e88fadc1786',
-  siteHostname: 'ocgchile-my.sharepoint.com',
-  sitePath: '/personal/ignacio_lopez_ocgchile_com',
-  listName: 'Oportunidades de Mejora'
-};
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxh7YacQVrCkTnj1qXWTGGpQFhZLnIXUWDw-NrNLBy2hpL-KfCTps0Dbviyg6zwlH1B/exec';
 
-// ══════════════════════════════════════════
-// MSAL — Autenticación Microsoft
-// ══════════════════════════════════════════
-const msalConfig = {
-  auth: {
-    clientId: CONFIG.clientId,
-    authority: `https://login.microsoftonline.com/${CONFIG.tenantId}`,
-    redirectUri: window.location.href.split('?')[0]
-  },
-  cache: { cacheLocation: 'sessionStorage' }
-};
-const msalInstance = new msal.PublicClientApplication(msalConfig);
-const scopes = ['User.Read', 'Sites.ReadWrite.All'];
-
-let accessToken = null;
-let siteId = null;
-let listId = null;
 let records = [];
 let charts = {};
 
-// ══════════════════════════════════════════
-// LOGIN
-// ══════════════════════════════════════════
-async function loginMicrosoft() {
-  const btn = document.getElementById('ms-login-btn');
-  const loading = document.getElementById('login-loading');
-  const err = document.getElementById('login-error');
-  btn.style.display = 'none';
-  loading.style.display = 'block';
-  err.style.display = 'none';
-  try {
-    const result = await msalInstance.loginPopup({ scopes, prompt: 'select_account' });
-    accessToken = result.accessToken;
-    const name = result.account.name || result.account.username;
-    const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    document.getElementById('user-avatar').textContent = initials;
-    document.getElementById('user-name').textContent = name;
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    document.getElementById('f-fdet').value = new Date().toISOString().split('T')[0];
-    await initSharePoint();
-  } catch(e) {
-    btn.style.display = 'flex';
-    loading.style.display = 'none';
-    err.style.display = 'block';
-    err.textContent = 'Error al iniciar sesión: ' + (e.message || 'intenta de nuevo');
-  }
-}
-
-async function getToken() {
-  const account = msalInstance.getAllAccounts()[0];
-  if (!account) return null;
-  try {
-    const r = await msalInstance.acquireTokenSilent({ scopes, account });
-    return r.accessToken;
-  } catch {
-    const r = await msalInstance.acquireTokenPopup({ scopes });
-    return r.accessToken;
-  }
-}
-
-function doLogout() {
-  msalInstance.logoutPopup();
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('ms-login-btn').style.display = 'flex';
-  document.getElementById('login-loading').style.display = 'none';
-}
-
-// ══════════════════════════════════════════
-// SHAREPOINT — Graph API
-// ══════════════════════════════════════════
-async function graphFetch(url, options = {}) {
-  const token = await getToken();
-  const res = await fetch(`https://graph.microsoft.com/v1.0${url}`, {
-    ...options,
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      ...(options.headers || {})
-    }
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error?.message || `HTTP ${res.status}`);
-  }
-  return res.status === 204 ? null : res.json();
-}
-
-async function initSharePoint() {
-  setSyncStatus('loading', 'Conectando a SharePoint...');
-  try {
-    // Obtener Site ID
-    const siteData = await graphFetch(`/sites/${CONFIG.siteHostname}:${CONFIG.sitePath}`);
-    siteId = siteData.id;
-
-    // Obtener List ID
-    const listsData = await graphFetch(`/sites/${siteId}/lists?$filter=displayName eq '${CONFIG.listName}'`);
-    if (listsData.value.length === 0) throw new Error(`Lista "${CONFIG.listName}" no encontrada`);
-    listId = listsData.value[0].id;
-
-    await loadRecords();
-    setSyncStatus('ok', 'Conectado a SharePoint');
-  } catch(e) {
-    setSyncStatus('error', 'Error de conexión');
-    console.error('SharePoint error:', e);
-    showToast('Error conectando a SharePoint: ' + e.message, true);
-  }
-}
-
 async function loadRecords() {
-  setSyncStatus('loading', 'Cargando datos...');
+  setSyncStatus('loading', 'Cargando desde Google Sheets...');
   try {
-    const data = await graphFetch(
-      `/sites/${siteId}/lists/${listId}/items?expand=fields&$top=500&$orderby=createdDateTime desc`
-    );
-    records = data.value.map(item => ({
-      id: item.id,
-      titulo: item.fields['Title'] || '',
-      desc: item.fields['Descripci_x00f3_n'] || '',
-      cat: item.fields['Categor_x00ed_a'] || '',
-      area: item.fields['_x00c1_rearesponsable'] || '',
-      resp: item.fields['Responsable'] || '',
-      prior: item.fields['Prioridad'] || '',
-      estado: item.fields['Estado'] || '',
-      fdet: item.fields['Fechadedetecci_x00f3_n'] || '',
-      flim: item.fields['Fechal_x00ed_mite'] || '',
-      coment: item.fields['Evidenciaocomentarios'] || '',
-      fechaRegistro: item.createdDateTime ? new Date(item.createdDateTime).toLocaleDateString('es-CL') : ''
-    }));
-    setSyncStatus('ok', `${records.length} registros sincronizados`);
+    const res = await fetch(SCRIPT_URL);
+    const raw = await res.json();
+    records = raw.map((row, i) => ({
+      id: i,
+      titulo:        row['Título']       || '',
+      desc:          row['Descripción']   || '',
+      cat:           row['Categoría']    || '',
+      area:          row['Área']         || '',
+      resp:          row['Responsable']  || '',
+      prior:         row['Prioridad']    || '',
+      estado:        row['Estado']       || '',
+      fdet:          row['F.Detección']  || '',
+      flim:          row['F.Límite']     || '',
+      coment:        row['Comentarios']  || '',
+      fechaRegistro: row['F.Registro']   || ''
+    })).filter(r => r.titulo);
+    setSyncStatus('ok', records.length + ' registros cargados');
     updateDashboard();
     renderTable();
   } catch(e) {
-    setSyncStatus('error', 'Error al cargar');
-    showToast('Error cargando registros: ' + e.message, true);
+    setSyncStatus('error', 'Error al cargar datos');
+    console.error(e);
   }
 }
 
 async function submitForm() {
   const titulo = document.getElementById('f-titulo').value.trim();
-  const desc = document.getElementById('f-desc').value.trim();
-  const cat = document.getElementById('f-cat').value;
-  const area = document.getElementById('f-area').value.trim();
-  const resp = document.getElementById('f-resp').value.trim();
-  const prior = document.getElementById('f-prior').value;
-  const succ = document.getElementById('form-success');
-  const errEl = document.getElementById('form-err');
+  const desc   = document.getElementById('f-desc').value.trim();
+  const cat    = document.getElementById('f-cat').value;
+  const area   = document.getElementById('f-area').value.trim();
+  const resp   = document.getElementById('f-resp').value.trim();
+  const prior  = document.getElementById('f-prior').value;
+  const succ   = document.getElementById('form-success');
+  const errEl  = document.getElementById('form-err');
   const errMsg = document.getElementById('form-err-msg');
-  const btn = document.getElementById('submit-btn');
+  const btn    = document.getElementById('submit-btn');
   succ.style.display = 'none';
   errEl.style.display = 'none';
 
-  if (!titulo||!desc||!cat||!area||!resp||!prior) {
+  if (!titulo || !desc || !cat || !area || !resp || !prior) {
     errEl.style.display = 'flex';
     errMsg.textContent = 'Completa todos los campos obligatorios (*)';
-    return;
-  }
-  if (!siteId || !listId) {
-    errEl.style.display = 'flex';
-    errMsg.textContent = 'No hay conexión con SharePoint. Recarga la página.';
     return;
   }
 
   btn.disabled = true;
   btn.textContent = 'Guardando...';
 
-  const fields = {
-    'Title': titulo,
-    'Descripci_x00f3_n': desc,
-    'Categor_x00ed_a': cat,
-    '_x00c1_rearesponsable': area,
-    'Responsable': resp,
-    'Prioridad': prior,
-    'Estado': document.getElementById('f-estado').value,
-    'Fechadedetecci_x00f3_n': document.getElementById('f-fdet').value || null,
-    'Fechal_x00ed_mite': document.getElementById('f-flim').value || null,
-    'Evidenciaocomentarios': document.getElementById('f-coment').value.trim()
+  const payload = {
+    titulo, desc, cat, area, resp, prior,
+    estado:        document.getElementById('f-estado').value,
+    fdet:          document.getElementById('f-fdet').value || '',
+    flim:          document.getElementById('f-flim').value || '',
+    coment:        document.getElementById('f-coment').value.trim(),
+    fechaRegistro: new Date().toLocaleDateString('es-CL')
   };
 
   try {
-    await graphFetch(`/sites/${siteId}/lists/${listId}/items`, {
+    await fetch(SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ fields })
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
     succ.style.display = 'flex';
     clearForm();
-    await loadRecords();
-    setTimeout(() => { succ.style.display = 'none'; }, 4000);
+    setTimeout(() => { loadRecords(); succ.style.display = 'none'; }, 2500);
   } catch(e) {
     errEl.style.display = 'flex';
     errMsg.textContent = 'Error al guardar: ' + e.message;
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Registrar en SharePoint';
+    btn.textContent = 'Registrar en Google Sheets';
   }
 }
 
-// ══════════════════════════════════════════
-// UI
-// ══════════════════════════════════════════
 function setSyncStatus(type, text) {
   const el = document.getElementById('sync-status');
   if (!el) return;
-  el.className = `sync-badge sync-${type}`;
-  el.innerHTML = `<div class="sync-dot"></div>${text}`;
-}
-
-function showToast(msg, isError) {
-  console[isError ? 'error' : 'log'](msg);
+  el.className = 'sync-badge sync-' + type;
+  el.innerHTML = '<div class="sync-dot"></div>' + text;
 }
 
 function showPage(id, el) {
@@ -579,11 +387,10 @@ function showPage(id, el) {
   document.getElementById('page-' + id).classList.add('active');
   if (el) el.classList.add('active');
   closeSidebar();
-  if (id === 'dashboard') updateDashboard();
-  if (id === 'registros') renderTable();
+  if (id === 'dashboard' || id === 'registros') loadRecords();
 }
 
-function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+function openSidebar()  { document.getElementById('sidebar').classList.add('open');    document.getElementById('overlay').classList.add('open'); }
 function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
 
 function clearForm() {
@@ -594,99 +401,100 @@ function clearForm() {
 }
 
 function statusBadge(s) {
-  if (s === 'Pendiente') return `<span class="badge badge-pending">Pendiente</span>`;
-  if (s === 'En proceso') return `<span class="badge badge-progress">En proceso</span>`;
-  return `<span class="badge badge-closed">Cerrada</span>`;
+  if (s === 'Pendiente')  return '<span class="badge badge-pending">Pendiente</span>';
+  if (s === 'En proceso') return '<span class="badge badge-progress">En proceso</span>';
+  return '<span class="badge badge-closed">Cerrada</span>';
 }
 function priorityBadge(p) {
-  if (p === 'Alta') return `<span class="badge badge-high">Alta</span>`;
-  if (p === 'Media') return `<span class="badge badge-medium">Media</span>`;
-  return `<span class="badge badge-low">Baja</span>`;
+  if (p === 'Alta')  return '<span class="badge badge-high">Alta</span>';
+  if (p === 'Media') return '<span class="badge badge-medium">Media</span>';
+  return '<span class="badge badge-low">Baja</span>';
 }
 
 function renderTable() {
   const search = document.getElementById('search-input').value.toLowerCase();
-  const fcat = document.getElementById('filter-cat').value;
-  const fest = document.getElementById('filter-estado').value;
+  const fcat   = document.getElementById('filter-cat').value;
+  const fest   = document.getElementById('filter-estado').value;
   const fprior = document.getElementById('filter-prior').value;
   const filtered = records.filter(r => {
-    const s = !search || (r.titulo+r.area+r.resp).toLowerCase().includes(search);
-    return s && (!fcat||r.cat===fcat) && (!fest||r.estado===fest) && (!fprior||r.prior===fprior);
+    const s = !search || (r.titulo + r.area + r.resp).toLowerCase().includes(search);
+    return s && (!fcat || r.cat === fcat) && (!fest || r.estado === fest) && (!fprior || r.prior === fprior);
   });
   const tbody = document.getElementById('table-body');
   const empty = document.getElementById('empty-state');
   if (!filtered.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
   empty.style.display = 'none';
-  tbody.innerHTML = filtered.map((r,i) => `
-    <tr>
-      <td style="color:var(--text3);font-size:12px">${i+1}</td>
-      <td style="max-width:200px;font-weight:500">${r.titulo}</td>
-      <td><span class="badge badge-cat">${r.cat}</span></td>
-      <td>${r.area}</td>
-      <td>${r.resp}</td>
-      <td>${priorityBadge(r.prior)}</td>
-      <td>${statusBadge(r.estado)}</td>
-      <td style="color:var(--text3);font-size:12px">${r.fdet||'—'}</td>
-      <td><button onclick="showDetail('${r.id}')" style="background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text2)">Ver</button></td>
-    </tr>`).join('');
+  tbody.innerHTML = filtered.map((r, i) =>
+    '<tr>' +
+    '<td style="color:var(--text3);font-size:12px">' + (i+1) + '</td>' +
+    '<td style="max-width:200px;font-weight:500">' + r.titulo + '</td>' +
+    '<td><span class="badge badge-cat">' + r.cat + '</span></td>' +
+    '<td>' + r.area + '</td>' +
+    '<td>' + r.resp + '</td>' +
+    '<td>' + priorityBadge(r.prior) + '</td>' +
+    '<td>' + statusBadge(r.estado) + '</td>' +
+    '<td style="color:var(--text3);font-size:12px">' + (r.fdet || '—') + '</td>' +
+    '<td><button onclick="showDetail(' + r.id + ')" style="background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text2)">Ver</button></td>' +
+    '</tr>'
+  ).join('');
 }
 
 function showDetail(id) {
-  const r = records.find(x => x.id == id);
+  const r = records.find(x => x.id === id);
   if (!r) return;
   document.getElementById('modal-title').textContent = r.titulo;
-  document.getElementById('modal-body').innerHTML = `
-    <div class="modal-field"><div class="modal-field-label">Descripción</div><div class="modal-field-value">${r.desc||'—'}</div></div>
-    <div class="modal-grid">
-      <div class="modal-field"><div class="modal-field-label">Categoría</div><div class="modal-field-value">${r.cat||'—'}</div></div>
-      <div class="modal-field"><div class="modal-field-label">Área responsable</div><div class="modal-field-value">${r.area||'—'}</div></div>
-      <div class="modal-field"><div class="modal-field-label">Responsable</div><div class="modal-field-value">${r.resp||'—'}</div></div>
-      <div class="modal-field"><div class="modal-field-label">Prioridad</div><div class="modal-field-value">${priorityBadge(r.prior)}</div></div>
-      <div class="modal-field"><div class="modal-field-label">Estado</div><div class="modal-field-value">${statusBadge(r.estado)}</div></div>
-      <div class="modal-field"><div class="modal-field-label">Fecha detección</div><div class="modal-field-value">${r.fdet||'—'}</div></div>
-      <div class="modal-field"><div class="modal-field-label">Fecha límite</div><div class="modal-field-value">${r.flim||'—'}</div></div>
-      <div class="modal-field"><div class="modal-field-label">Fecha registro</div><div class="modal-field-value">${r.fechaRegistro||'—'}</div></div>
-    </div>
-    ${r.coment ? `<div class="modal-field"><div class="modal-field-label">Comentarios</div><div class="modal-field-value">${r.coment}</div></div>` : ''}`;
+  document.getElementById('modal-body').innerHTML =
+    '<div class="modal-field"><div class="modal-field-label">Descripción</div><div class="modal-field-value">' + (r.desc||'—') + '</div></div>' +
+    '<div class="modal-grid">' +
+    '<div class="modal-field"><div class="modal-field-label">Categoría</div><div class="modal-field-value">' + (r.cat||'—') + '</div></div>' +
+    '<div class="modal-field"><div class="modal-field-label">Área responsable</div><div class="modal-field-value">' + (r.area||'—') + '</div></div>' +
+    '<div class="modal-field"><div class="modal-field-label">Responsable</div><div class="modal-field-value">' + (r.resp||'—') + '</div></div>' +
+    '<div class="modal-field"><div class="modal-field-label">Prioridad</div><div class="modal-field-value">' + priorityBadge(r.prior) + '</div></div>' +
+    '<div class="modal-field"><div class="modal-field-label">Estado</div><div class="modal-field-value">' + statusBadge(r.estado) + '</div></div>' +
+    '<div class="modal-field"><div class="modal-field-label">Fecha detección</div><div class="modal-field-value">' + (r.fdet||'—') + '</div></div>' +
+    '<div class="modal-field"><div class="modal-field-label">Fecha límite</div><div class="modal-field-value">' + (r.flim||'—') + '</div></div>' +
+    '<div class="modal-field"><div class="modal-field-label">Fecha registro</div><div class="modal-field-value">' + (r.fechaRegistro||'—') + '</div></div>' +
+    '</div>' +
+    (r.coment ? '<div class="modal-field"><div class="modal-field-label">Comentarios</div><div class="modal-field-value">' + r.coment + '</div></div>' : '');
   document.getElementById('modal-backdrop').classList.add('open');
 }
 
 function updateDashboard() {
-  document.getElementById('stat-total').textContent = records.length;
-  document.getElementById('stat-pending').textContent = records.filter(r=>r.estado==='Pendiente').length;
-  document.getElementById('stat-progress').textContent = records.filter(r=>r.estado==='En proceso').length;
-  document.getElementById('stat-closed').textContent = records.filter(r=>r.estado==='Cerrada').length;
+  document.getElementById('stat-total').textContent    = records.length;
+  document.getElementById('stat-pending').textContent  = records.filter(r => r.estado === 'Pendiente').length;
+  document.getElementById('stat-progress').textContent = records.filter(r => r.estado === 'En proceso').length;
+  document.getElementById('stat-closed').textContent   = records.filter(r => r.estado === 'Cerrada').length;
   buildCharts();
 }
 
 function buildCharts() {
-  const cats = ['Procesos internos','Calidad de productos/servicios','Tecnología y sistemas','Seguridad y medio ambiente'];
-  const catCounts = cats.map(c => records.filter(r=>r.cat===c).length);
-  const pending = records.filter(r=>r.estado==='Pendiente').length;
-  const progress = records.filter(r=>r.estado==='En proceso').length;
-  const closed = records.filter(r=>r.estado==='Cerrada').length;
-  const alta = records.filter(r=>r.prior==='Alta').length;
-  const media = records.filter(r=>r.prior==='Media').length;
-  const baja = records.filter(r=>r.prior==='Baja').length;
+  const cats      = ['Procesos internos','Calidad de productos/servicios','Tecnología y sistemas','Seguridad y medio ambiente'];
+  const catCounts = cats.map(c => records.filter(r => r.cat === c).length);
+  const pending   = records.filter(r => r.estado === 'Pendiente').length;
+  const progress  = records.filter(r => r.estado === 'En proceso').length;
+  const closed    = records.filter(r => r.estado === 'Cerrada').length;
+  const alta      = records.filter(r => r.prior === 'Alta').length;
+  const media     = records.filter(r => r.prior === 'Media').length;
+  const baja      = records.filter(r => r.prior === 'Baja').length;
 
-  if (charts.cat) charts.cat.destroy();
-  if (charts.status) charts.status.destroy();
+  if (charts.cat)      charts.cat.destroy();
+  if (charts.status)   charts.status.destroy();
   if (charts.priority) charts.priority.destroy();
 
   charts.cat = new Chart(document.getElementById('chartCat'), {
-    type:'bar',
-    data:{labels:['Procesos','Calidad','Tecnología','Seguridad'],datasets:[{data:catCounts,backgroundColor:['#00C2A0','#3B82F6','#8B5CF6','#FF6B35'],borderRadius:6,borderSkipped:false}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#F1F5F9'}}}}
+    type: 'bar',
+    data: { labels: ['Procesos','Calidad','Tecnología','Seguridad'], datasets: [{ data: catCounts, backgroundColor: ['#00C2A0','#3B82F6','#8B5CF6','#FF6B35'], borderRadius: 6, borderSkipped: false }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#F1F5F9' } } } }
   });
   charts.status = new Chart(document.getElementById('chartStatus'), {
-    type:'doughnut',
-    data:{labels:['Pendiente','En proceso','Cerrada'],datasets:[{data:[pending,progress,closed],backgroundColor:['#F59E0B','#3B82F6','#00C2A0'],borderWidth:0,hoverOffset:6}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{font:{size:12},padding:12,usePointStyle:true,pointStyle:'circle'}}}}
+    type: 'doughnut',
+    data: { labels: ['Pendiente','En proceso','Cerrada'], datasets: [{ data: [pending, progress, closed], backgroundColor: ['#F59E0B','#3B82F6','#00C2A0'], borderWidth: 0, hoverOffset: 6 }] },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 12, usePointStyle: true, pointStyle: 'circle' } } } }
   });
   charts.priority = new Chart(document.getElementById('chartPriority'), {
-    type:'bar',
-    data:{labels:['Alta','Media','Baja'],datasets:[{data:[alta,media,baja],backgroundColor:['#EF4444','#F59E0B','#22C55E'],borderRadius:6,borderSkipped:false}]},
-    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#F1F5F9'}},y:{grid:{display:false}}}}
+    type: 'bar',
+    data: { labels: ['Alta','Media','Baja'], datasets: [{ data: [alta, media, baja], backgroundColor: ['#EF4444','#F59E0B','#22C55E'], borderRadius: 6, borderSkipped: false }] },
+    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#F1F5F9' } }, y: { grid: { display: false } } } }
   });
 }
 
@@ -704,24 +512,9 @@ function exportExcel() {
   XLSX.writeFile(wb, 'oportunidades_mejora_OCGChile.xlsx');
 }
 
-// Manejar redirect de MSAL al cargar
-window.onload = async () => {
-  try {
-    await msalInstance.handleRedirectPromise();
-    const accounts = msalInstance.getAllAccounts();
-    if (accounts.length > 0) {
-      const name = accounts[0].name || accounts[0].username;
-      const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-      document.getElementById('user-avatar').textContent = initials;
-      document.getElementById('user-name').textContent = name;
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      document.getElementById('f-fdet').value = new Date().toISOString().split('T')[0];
-      const r = await msalInstance.acquireTokenSilent({ scopes, account: accounts[0] });
-      accessToken = r.accessToken;
-      await initSharePoint();
-    }
-  } catch(e) { console.log('No hay sesión activa'); }
+window.onload = () => {
+  document.getElementById('f-fdet').value = new Date().toISOString().split('T')[0];
+  loadRecords();
 };
 </script>
 </body>
